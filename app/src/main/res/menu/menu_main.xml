@@ -3,8 +3,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="net.cpacm.moneyview.MainActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/mode"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/Mode">
+        <menu>
+            <item
+                android:id="@+id/all"
+                android:orderInCategory="100"
+                android:title="@string/All"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/digit"
+                android:orderInCategory="100"
+                android:title="@string/Digit"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/format"
+        android:orderInCategory="100"
+        android:title="@string/Format">
+        <menu>
+            <item
+                android:id="@+id/disable"
+                android:orderInCategory="100"
+                android:title="@string/Disable"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/integer"
+                android:orderInCategory="100"
+                android:title="@string/Integer"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/floats"
+                android:orderInCategory="100"
+                android:title="@string/Float"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/color"
+        android:checkable="true"
+        android:checked="false"
+        android:orderInCategory="100"
+        android:title="@string/Color"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/symbol"
+        android:checkable="true"
+        android:checked="false"
+        android:orderInCategory="100"
+        android:title="@string/Symbol"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/rate"
+        android:orderInCategory="100"
+        android:title="@string/Rate">
+        <menu>
+            <item
+                android:id="@+id/money_rate"
+                android:orderInCategory="100"
+                android:title="@string/MoneyRate"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/symbol_rate"
+                android:orderInCategory="100"
+                android:title="@string/SymbolRate"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/decimal_rate"
+                android:orderInCategory="100"
+                android:title="@string/DecimalRate"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/clear_rate"
+                android:orderInCategory="100"
+                android:title="@string/ClearRate"
+                app:showAsAction="never" />
+        </menu>
+    </item>
+    <item
+        android:id="@+id/font"
+        android:checkable="true"
+        android:checked="false"
+        android:orderInCategory="100"
+        android:title="@string/Font"
+        app:showAsAction="never" />
+
+
 </menu>

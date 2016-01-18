@@ -13,28 +13,33 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.TypefaceSpan;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 使用自定义字体的文本显示框<br/>
- * A textView whose use custom font type
  *
  * @Auther: cpacm
  * @Date: 2015/10/26 0026-下午 3:59
  */
 public class MoneyTextView extends TextView {
 
-    private final static String DEFAULT_FONT = "money.otf";
+    private Context mContext;
     CustomTypefaceSpan customTypefaceSpan;
-    private float moneySize;
+    private float moneyRate;
     private int moneyColor;
     private MoneyFormat moneyFormat;
     private MoneyMode moneyMode;
     private String moneyText;
     private String moneyFont;
+    private String symbol;
+    private float symbolRate;
+    private float decimalRate;
+
+    private List<SplitText> textList;
 
     private MoneyTextView(Context context) {
         super(context);
@@ -52,31 +57,23 @@ public class MoneyTextView extends TextView {
     }
 
     public void init(Context context, AttributeSet attrs) {
-        init(context);
+        mContext = context;
+        textList = new ArrayList<>();
         TypedArray typeArray = context.obtainStyledAttributes(attrs, R.styleable.MoneyTextView);
                  /*这里从集合里取出相对应的属性值,第二参数是如果使用者没用配置该属性时所用的默认值*/
         moneyColor = typeArray.getColor(R.styleable.MoneyTextView_moneyColor, getTextColors().getDefaultColor());
-        moneySize = typeArray.getDimension(R.styleable.MoneyTextView_moneySize, getTextSize());
+        moneyRate = typeArray.getFloat(R.styleable.MoneyTextView_moneyRate, 1f);
         moneyMode = MoneyMode.getModeById(typeArray.getInteger(R.styleable.MoneyTextView_moneyMode, 0));
         moneyFormat = MoneyFormat.getFormatById(typeArray.getInteger(R.styleable.MoneyTextView_moneyFormat, 0));
         moneyText = typeArray.getString(R.styleable.MoneyTextView_moneyText);
         moneyFont = typeArray.getString(R.styleable.MoneyTextView_moneyFont);
-        if (TextUtils.isEmpty(moneyFont)) moneyFont = DEFAULT_FONT;
+        symbol = typeArray.getString(R.styleable.MoneyTextView_symbol);
+        if (TextUtils.isEmpty(symbol)) symbol = "";
+        symbolRate = typeArray.getFloat(R.styleable.MoneyTextView_symbolRate, moneyRate);
+        decimalRate = typeArray.getFloat(R.styleable.MoneyTextView_decimalRate, moneyRate);
         if (TextUtils.isEmpty(moneyText)) moneyText = getText().toString();
-        AssetManager assertMgr = context.getAssets();
-        Typeface fontType = Typeface.createFromAsset(assertMgr, moneyFont);
-        customTypefaceSpan = new CustomTypefaceSpan("sans-serif", fontType);
         typeArray.recycle();
         setMoneyText(moneyText);
-    }
-
-    public void init(Context context) {
-
-        moneySize = getTextSize();
-        moneyColor = getTextColors().getDefaultColor();
-        moneyMode = MoneyMode.ALL;
-        moneyFormat = MoneyFormat.FORMAT_DISABLE;
-        moneyText = getText().toString();
     }
 
     public void setText(String text) {
@@ -89,47 +86,186 @@ public class MoneyTextView extends TextView {
         setText(moneyText);
     }
 
-
     private SpannableString dealMoney(CharSequence text) {
         SpannableString richStr = new SpannableString("");
         if (TextUtils.isEmpty(text))
             return richStr;
+        String str = dealText(text.toString());
         switch (moneyMode) {
             case ALL:
-                text = format(text.toString(), moneyFormat.getFormat());
-                richStr = new SpannableString(text);
-                richStr = setTextFontFamilySpan(richStr, 0, richStr.length());
-                richStr = setTextColorSpan(richStr, 0, richStr.length(), moneyColor);
+                richStr = new SpannableString(str);
+                for (SplitText splitText : textList) {
+                    richStr = setTextFontFamilySpan(richStr, splitText.getStartPosition(), splitText.getStartPosition() + splitText.length());
+                    richStr = setTextColorSpan(richStr, splitText.getStartPosition(), splitText.getStartPosition() + splitText.length(), moneyColor);
+                    int length = symbol.length();
+                    if (length > 0 && splitText.isNumber()) {
+                        richStr = setRelativeSpan(richStr, splitText.getStartPosition(), splitText.getStartPosition() + length, symbolRate);
+                        richStr = setRelativeSpan(richStr, splitText.getStartPosition() + length, splitText.getStartPosition() + splitText.length(), moneyRate);
+                    } else
+                        richStr = setRelativeSpan(richStr, splitText.getStartPosition(), splitText.getStartPosition() + splitText.length(), moneyRate);
+                    if (splitText.getPointPosition() >= 0 && splitText.length() > 0 && splitText.isNumber()) {
+                        int dec = splitText.getPointPosition();
+                        richStr = setRelativeSpan(richStr, splitText.getStartPosition() + dec, splitText.getStartPosition() + splitText.length(), decimalRate);
+                    }
+                }
                 break;
             case DIGIT:
-                text = format(text.toString(), moneyFormat.getFormat());
-                richStr = new SpannableString(text);
+                richStr = new SpannableString(str);
+                for (SplitText splitText : textList) {
+                    if (!splitText.isNumber()) continue;
+                    richStr = setTextFontFamilySpan(richStr, splitText.getStartPosition(), splitText.getStartPosition() + splitText.length());
+                    richStr = setTextColorSpan(richStr, splitText.getStartPosition(), splitText.getStartPosition() + splitText.length(), moneyColor);
+                    int length = symbol.length();
+                    if (length > 0) {
+                        richStr = setRelativeSpan(richStr, splitText.getStartPosition(), splitText.getStartPosition() + length, symbolRate);
+                        richStr = setRelativeSpan(richStr, splitText.getStartPosition() + length, splitText.getStartPosition() + splitText.length(), moneyRate);
+                    } else
+                        richStr = setRelativeSpan(richStr, splitText.getStartPosition(), splitText.getStartPosition() + splitText.length(), moneyRate);
+                    if (splitText.getPointPosition() >= 0 && splitText.length() > 0 && splitText.isNumber()) {
+                        int dec = splitText.getPointPosition();
+                        richStr = setRelativeSpan(richStr, splitText.getStartPosition() + dec, splitText.getStartPosition() + splitText.length(), decimalRate);
+                    }
+                }
                 break;
         }
         return richStr;
     }
 
-    public boolean dealNumber(String text) {
-        String reg = "[\\d]+\\.[\\d]+";
-        return Pattern.compile(reg).matcher(text).find();
+    private String dealText(String text) {
+        textList.clear();
+        String str = "";
+        boolean isNum = false;
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (Character.isDigit(c) || c == '.') {
+                if (!isNum) {
+                    isNum = true;
+                    if (!TextUtils.isEmpty(str)) {
+                        textList.add(new SplitText(str, false));
+                    }
+                    str = "";
+                }
+                str += String.valueOf(c);
+            } else {
+                if (isNum) {
+                    isNum = false;
+                    if (!TextUtils.isEmpty(str)) {
+                        textList.add(new SplitText(str));
+                    }
+                    str = "";
+                }
+                str += String.valueOf(c);
+            }
+        }
+        if (!TextUtils.isEmpty(str)) {
+            textList.add(new SplitText(str));
+        }
+        str = "";
+        int startPosition = 0;
+        for (SplitText splitText : textList) {
+            splitText.format(moneyFormat.getFormat());
+            splitText.setStartPosition(startPosition);
+            if (splitText.isNumber()) {
+                splitText.setText(symbol + splitText.getText());
+            }
+            str += splitText.getText();
+            startPosition += splitText.length();
+        }
+        return str;
     }
 
     /**
-     * 按给定格式格式化数字
+     * 设置文字的显示模式<br/>
      *
-     * @param text   需要格式化的数字
-     * @param format 格式
-     * @return String
+     * @param mode ALL:改变所有文字, DIGIT;只改变数字
+     * @see MoneyMode
      */
-    public String format(String text, String format) {
-        if (TextUtils.isEmpty(format)) return text;
-        if (dealNumber(text)) {
-            DecimalFormat decimalFormat = new DecimalFormat(format);
-            decimalFormat.applyPattern(format);
-            return decimalFormat.format(Double.valueOf(text));
-        } else return text;
-
+    public void setMoneyMode(MoneyMode mode) {
+        this.moneyMode = mode;
+        setMoneyText(this.moneyText);
     }
+
+    /**
+     * 设置金钱文字前的显示符号<br/>
+     *
+     * @param symbol 金钱符号
+     */
+    public void setSymbol(String symbol) {
+        this.symbol = symbol;
+        setMoneyText(this.moneyText);
+    }
+
+    /**
+     * 设置金钱文字的颜色
+     *
+     * @param color
+     */
+    public void setMoneyColor(int color) {
+        moneyColor = color;
+        setMoneyText(this.moneyText);
+    }
+
+    /**
+     * 设置金钱的相对大小
+     *
+     * @param rate
+     */
+    public void setMoneyRate(float rate) {
+        moneyRate = rate;
+        setMoneyText(this.moneyText);
+    }
+
+    /**
+     * 设置金钱符号的相对大小
+     *
+     * @param rate
+     */
+    public void setSymbolRate(float rate) {
+        symbolRate = rate;
+        setMoneyText(this.moneyText);
+    }
+
+    /**
+     * 设置小数点后面的小数相对大小(只在FORMAT_FLOAT下有用)
+     *
+     * @param rate
+     */
+    public void setDecimalRate(float rate) {
+        decimalRate = rate;
+        setMoneyText(this.moneyText);
+    }
+
+    /**
+     * 金钱数字的转换方式
+     *
+     * @param moneyFormat
+     * @see MoneyFormat
+     */
+    public void setMoneyFormat(MoneyFormat moneyFormat) {
+        this.moneyFormat = moneyFormat;
+        setMoneyText(this.moneyText);
+    }
+
+    /**
+     * 设置金钱文字的字体，从assets读取
+     *
+     * @param moneyFont
+     */
+    public void setMoneyFont(String moneyFont) {
+        this.moneyFont = moneyFont;
+        setMoneyText(this.moneyText);
+    }
+
+    public void setMoneyText(float text) {
+        this.moneyText = String.valueOf(text);
+        setText(moneyText);
+    }
+
+    public void setMoneyText(int text) {
+        this.moneyText = String.valueOf(text);
+        setText(moneyText);
+    }
+
 
     /**
      * 设置文字的相对大小，默认为1f
@@ -154,7 +290,18 @@ public class MoneyTextView extends TextView {
      * @return spannable
      */
     public SpannableString setTextFontFamilySpan(SpannableString spannable, int start, int end) {
-        spannable.setSpan(customTypefaceSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (!TextUtils.isEmpty(moneyFont)) {
+            AssetManager assertMgr = mContext.getAssets();
+            try {
+                Typeface fontType = Typeface.createFromAsset(assertMgr, moneyFont);
+                customTypefaceSpan = new CustomTypefaceSpan("sans-serif", fontType);
+                spannable.setSpan(customTypefaceSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+                System.gc();
+            } catch (RuntimeException e) {
+                Log.e("MoneyTextView", "can't find font file from assets");
+            }
+
+        }
         return spannable;
     }
 
@@ -172,7 +319,7 @@ public class MoneyTextView extends TextView {
         return spannable;
     }
 
-    enum MoneyFormat {
+    public enum MoneyFormat {
         FORMAT_DISABLE(0, ""), FORMAT_INTEGER(1, "#,###"), FORMAT_FLOAT(2, "###,##0.00");
         private int id;
         private String format;
@@ -212,7 +359,7 @@ public class MoneyTextView extends TextView {
         }
     }
 
-    enum MoneyMode {
+    public enum MoneyMode {
         ALL(0), DIGIT(1);
         private int id;
 
@@ -231,7 +378,6 @@ public class MoneyTextView extends TextView {
             }
         }
     }
-
 
     public class CustomTypefaceSpan extends TypefaceSpan {
         private final Typeface newType;
@@ -269,5 +415,4 @@ public class MoneyTextView extends TextView {
             paint.setTypeface(tf);
         }
     }
-
 }

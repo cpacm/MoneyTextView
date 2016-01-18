@@ -2,7 +2,10 @@
 <resources>
     <declare-styleable name="MoneyTextView">
         <attr name="moneyColor" format="reference|color" />
-        <attr name="moneySize" format="reference|dimension" />
+        <attr name="moneyRate" format="float" />
+        <attr name="symbol" format="string" />
+        <attr name="symbolRate" format="float" />
+        <attr name="decimalRate" format="float" />
         <attr name="moneyText" format="reference|string" />
         <attr name="moneyFont" format="reference|string" />
         <attr name="moneyFormat" format="enum">

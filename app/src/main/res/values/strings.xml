@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">MoneyView</string>
-    <string name="action_settings">Settings</string>
+
+    <string name="Mode">Mode（显示样式）</string>
+    <string name="All">All（全文字）</string>
+    <string name="Digit">Digit（仅数字）</string>
+    <string name="Format">Format（格式化）</string>
+    <string name="Disable">Disable（取消格式化）</string>
+    <string name="Integer">Integer（整数化）</string>
+    <string name="Float">Float（小数化）</string>
+    <string name="Color">Red（红色）</string>
+    <string name="Symbol">￥（符号）</string>
+    <string name="Rate">Rate（相对大小）</string>
+    <string name="MoneyRate">money（数字 1.2）</string>
+    <string name="SymbolRate">symbol（符号 0.8）</string>
+    <string name="DecimalRate">decimal（小数 0.6）</string>
+    <string name="ClearRate">clear（初始化）</string>
+    <string name="Font">font（字体 AGBQ.otf）</string>
 </resources>
