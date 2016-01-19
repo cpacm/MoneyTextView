@@ -5,10 +5,10 @@ import android.text.TextUtils;
 import java.text.DecimalFormat;
 
 /**
- * 用于存放分离开的字符串
+ * A class used to store the split texts
  *
- * @Auther: cpacm
- * @Date: 2016/1/18 0018-上午 9:55
+ * Auther: cpacm
+ * Date: 2016/1/18
  */
 public class SplitText {
     private String text;
@@ -63,9 +63,9 @@ public class SplitText {
     }
 
     /**
-     * 按给定格式格式化数字
+     * Format numbers in a given format
      *
-     * @param format 格式
+     * @param format
      * @return String
      */
     public String format(String format) {

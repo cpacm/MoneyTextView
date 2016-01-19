@@ -20,10 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 使用自定义字体的文本显示框<br/>
- *
- * @Auther: cpacm
- * @Date: 2015/10/26 0026-下午 3:59
+ * A money textview to be using for a custom font
+ * Auther: cpacm
+ * Date: 2015/10/26
  */
 public class MoneyTextView extends TextView {
 
@@ -60,7 +59,7 @@ public class MoneyTextView extends TextView {
         mContext = context;
         textList = new ArrayList<>();
         TypedArray typeArray = context.obtainStyledAttributes(attrs, R.styleable.MoneyTextView);
-                 /*这里从集合里取出相对应的属性值,第二参数是如果使用者没用配置该属性时所用的默认值*/
+
         moneyColor = typeArray.getColor(R.styleable.MoneyTextView_moneyColor, getTextColors().getDefaultColor());
         moneyRate = typeArray.getFloat(R.styleable.MoneyTextView_moneyRate, 1f);
         moneyMode = MoneyMode.getModeById(typeArray.getInteger(R.styleable.MoneyTextView_moneyMode, 0));
@@ -175,9 +174,9 @@ public class MoneyTextView extends TextView {
     }
 
     /**
-     * 设置文字的显示模式<br/>
+     * Set the textview display mode
      *
-     * @param mode ALL:改变所有文字, DIGIT;只改变数字
+     * @param mode ALL:change all text, DIGIT;digit change only
      * @see MoneyMode
      */
     public void setMoneyMode(MoneyMode mode) {
@@ -186,9 +185,9 @@ public class MoneyTextView extends TextView {
     }
 
     /**
-     * 设置金钱文字前的显示符号<br/>
+     * Set the display symbol before the money textview
      *
-     * @param symbol 金钱符号
+     * @param symbol
      */
     public void setSymbol(String symbol) {
         this.symbol = symbol;
@@ -196,7 +195,7 @@ public class MoneyTextView extends TextView {
     }
 
     /**
-     * 设置金钱文字的颜色
+     * Set the color of money textview
      *
      * @param color
      */
@@ -206,7 +205,7 @@ public class MoneyTextView extends TextView {
     }
 
     /**
-     * 设置金钱的相对大小
+     * Set the relative size of money textview
      *
      * @param rate
      */
@@ -216,7 +215,7 @@ public class MoneyTextView extends TextView {
     }
 
     /**
-     * 设置金钱符号的相对大小
+     * Set the relative size of the symbol
      *
      * @param rate
      */
@@ -226,7 +225,7 @@ public class MoneyTextView extends TextView {
     }
 
     /**
-     * 设置小数点后面的小数相对大小(只在FORMAT_FLOAT下有用)
+     * Sets the decimal relative size after the decimal point (only useful in FORMAT_FLOAT)
      *
      * @param rate
      */
@@ -236,7 +235,7 @@ public class MoneyTextView extends TextView {
     }
 
     /**
-     * 金钱数字的转换方式
+     * Money digital format
      *
      * @param moneyFormat
      * @see MoneyFormat
@@ -247,7 +246,7 @@ public class MoneyTextView extends TextView {
     }
 
     /**
-     * 设置金钱文字的字体，从assets读取
+     * Set the font of tthe money textview, read from assets
      *
      * @param moneyFont
      */
@@ -267,28 +266,11 @@ public class MoneyTextView extends TextView {
     }
 
 
-    /**
-     * 设置文字的相对大小，默认为1f
-     *
-     * @param spannable
-     * @param start
-     * @param end
-     * @param rate
-     * @return
-     */
     public SpannableString setRelativeSpan(SpannableString spannable, int start, int end, float rate) {
         spannable.setSpan(new RelativeSizeSpan(rate), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannable;
     }
 
-    /**
-     * 设置文字字体
-     *
-     * @param spannable 需要设置的文字
-     * @param start     开始的位置
-     * @param end       结束的位置
-     * @return spannable
-     */
     public SpannableString setTextFontFamilySpan(SpannableString spannable, int start, int end) {
         if (!TextUtils.isEmpty(moneyFont)) {
             AssetManager assertMgr = mContext.getAssets();
@@ -305,15 +287,7 @@ public class MoneyTextView extends TextView {
         return spannable;
     }
 
-    /**
-     * 设置文字颜色
-     *
-     * @param spannable 需要设置的文字
-     * @param start     开始位置
-     * @param end       结束位置
-     * @param color     颜色
-     * @return spannable
-     */
+
     public SpannableString setTextColorSpan(SpannableString spannable, int start, int end, int color) {
         spannable.setSpan(new ForegroundColorSpan(color), start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         return spannable;
