@@ -1,4 +1,4 @@
-package net.cpacm.library;
+package net.cpacm.moneytextview;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -15,6 +15,8 @@ import android.text.style.TypefaceSpan;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.TextView;
+
+import net.cpacm.library.R;
 
 import java.util.ArrayList;
 import java.util.List;

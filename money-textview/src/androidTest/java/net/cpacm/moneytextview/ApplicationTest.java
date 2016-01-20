@@ -1,4 +1,4 @@
-package net.cpacm.library;
+package net.cpacm.moneytextview;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;
