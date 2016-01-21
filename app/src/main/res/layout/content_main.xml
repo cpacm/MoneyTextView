@@ -29,5 +29,13 @@
         android:id="@+id/money_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="cpacm" />
+        app:moneyColor="@color/red"
+        app:moneyFormat="format_integer"
+        app:decimalRate="0.6"
+        app:moneyFont="[asserts]font.otf"
+        app:moneyMode="digit"
+        app:symbol="$"
+        app:symbolRate="0.8"
+        app:moneyRate="1.2"
+        app:moneyText="cpacm"/>
 </LinearLayout>
