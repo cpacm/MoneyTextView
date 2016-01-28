@@ -71,7 +71,7 @@ public class MoneyTextView extends TextView {
         symbol = typeArray.getString(R.styleable.MoneyTextView_symbol);
         if (TextUtils.isEmpty(symbol)) symbol = "";
         symbolRate = typeArray.getFloat(R.styleable.MoneyTextView_symbolRate, moneyRate);
-        decimalRate = typeArray.getFloat(R.styleable.MoneyTextView_decimalRate, 1f);
+        decimalRate = typeArray.getFloat(R.styleable.MoneyTextView_decimalRate, moneyRate);
         if (TextUtils.isEmpty(moneyText)) moneyText = getText().toString();
         typeArray.recycle();
         setMoneyText(moneyText);
