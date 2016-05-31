@@ -12,9 +12,8 @@
 
 This project has been pushed to JCentral, in `aar`.
 
-`aar`ÎÄ¼şÒÑ¾­ÉÏ´«µ½JCenterÖĞ£¬¿ÉÒÔÍ¨¹ıgradleÖ±½ÓÊ¹ÓÃ¡£
+`aar`æ–‡ä»¶å·²ç»ä¸Šä¼ åˆ°JCenterä¸­ï¼Œå¯ä»¥é€šè¿‡gradleç›´æ¥ä½¿ç”¨ã€‚
 
-Version: `0.9.5` 
 
 gradle:
 
