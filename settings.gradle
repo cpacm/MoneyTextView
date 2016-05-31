@@ -1,1 +1,1 @@
-include ':app', ':moneyview'
+include ':app', ':library'

@@ -18,7 +18,7 @@ This project has been pushed to JCentral, in `aar`.
 gradle:
 
 ```
-compile 'net.cpacm.moneytext:moneyview:1.0.0'
+compile 'net.cpacm.moneyview:library:1.0.0'
 ```
 
 
