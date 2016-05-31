@@ -1,1 +1,1 @@
-include ':app', ':money-textview'
+include ':app', ':moneyview'

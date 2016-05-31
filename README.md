@@ -19,14 +19,14 @@ Version: `0.9.5`
 gradle:
 
 ```
-compile 'net.cpacm.moneytext:money-textview:0.9.5'
+compile 'net.cpacm.moneytext:moneyview:1.0.0'
 ```
 
 
 ##### Config in xml
 
 ```xml
-    <net.cpacm.moneytextview.MoneyTextView
+    <net.cpacm.moneyview.MoneyTextView
         android:id="@+id/money_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

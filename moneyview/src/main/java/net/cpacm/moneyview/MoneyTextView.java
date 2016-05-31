@@ -1,4 +1,4 @@
-package net.cpacm.moneytextview;
+package net.cpacm.moneyview;
 
 import android.content.Context;
 import android.content.res.AssetManager;

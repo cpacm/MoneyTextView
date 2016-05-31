@@ -25,7 +25,7 @@
         android:text="MoneyTextView" />
 
 
-    <net.cpacm.moneytextview.MoneyTextView
+    <net.cpacm.moneyview.MoneyTextView
         android:id="@+id/money_tv"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

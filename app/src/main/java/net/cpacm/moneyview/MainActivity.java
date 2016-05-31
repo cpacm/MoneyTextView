@@ -9,8 +9,6 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 
-import net.cpacm.moneytextview.MoneyTextView;
-
 public class MainActivity extends AppCompatActivity {
 
     private MoneyTextView moneyTv;

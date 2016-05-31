@@ -4,7 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MoneyTextView.iml" filepath="$PROJECT_DIR$/MoneyTextView.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/money-textview/money-textview.iml" filepath="$PROJECT_DIR$/money-textview/money-textview.iml" />
+      <module fileurl="file://$PROJECT_DIR$/moneyview/library.iml" filepath="$PROJECT_DIR$/moneyview/library.iml" />
     </modules>
   </component>
 </project>

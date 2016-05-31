@@ -2,17 +2,17 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = '0.9.5'
+version = '1.0.0'
 
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
 
     defaultConfig {
-        minSdkVersion 15
+        minSdkVersion 9
         targetSdkVersion 23
         versionCode 1
-        versionName '0.9.5'
+        versionName '1.0.0'
     }
     buildTypes {
         release {
@@ -54,9 +54,9 @@ install {
         pom.project {
             packaging 'aar'
             groupId 'net.cpacm.moneytext'
-            artifactId 'money-textview'
+            artifactId 'moneyview'
 
-            name 'moneytextview'
+            name 'moneyview'
             description 'An extended TextView to be used for displaying Money Values.'
             url 'https://github.com/cpacm/MoneyTextView'
             inceptionYear '2016'
@@ -102,9 +102,9 @@ bintray {
         issueTrackerUrl = 'https://github.com/cpacm/MoneyTextView/issues'
         publicDownloadNumbers = true
         version {
-            name = '0.9.5'
-            desc = 'money-textview 0.9 release'
-            vcsTag = '0.9.5'
+            name = '1.0.0'
+            desc = 'money-textview release'
+            vcsTag = '1.0.0'
             attributes = ['gradle-plugin': 'com.use.less:com.use.less.gradle:gradle-useless-plugin']
         }
     }
