@@ -4,7 +4,7 @@
 
 **An extended TextView to be used for displaying Money Values.**
 
-<center>![MoneyTextView](./money-textview.gif)</center>
+<center>![MoneyTextView](https://github.com/cpacm/MoneyTextView/blob/master/money-textview.gif)</center>
 
 ## How to use
 
